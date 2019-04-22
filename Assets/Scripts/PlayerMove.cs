@@ -61,6 +61,18 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
             animator.SetTrigger("isJumping");
 
+        float moveSpeed = Input.GetAxis("Vertical");
+        animator.SetFloat("speed", moveSpeed);
+
+        if(moveSpeed>0.5f)
+        {
+            agent.speed = moveSpeed * 7;
+        }
+        else
+        {
+            agent.speed = 3.5f;
+        }
+
         if (followedObject != null)
         {
             agent.SetDestination(followedObject.transform.position);
