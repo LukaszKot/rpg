@@ -6,38 +6,46 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyPatrol : MonoBehaviour
 {
-    private NavMeshAgent agent;
-    public float x1;
-    public float y1;
-    public float z1;
-    public float x2;
-    public float y2;
-    public float z2;
+    public float minOnAxis=-10;
+    public float maxOnAxis= 10;
+    public float sufficientDistance=0.1f;
 
-    private Vector3 position1;
-    private Vector3 position2;
-    private string target = "position1";
+    private NavMeshAgent agent;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        position1 = new Vector3(x1, y1, z1);
-        position2 = new Vector3(x2, y2, z2);
     }
 
     void Update()
     {
-        if (target == "position1")
+        if(IsCloseToDestination())
         {
-            agent.SetDestination(position1);
-            agent.stoppingDistance = 0.1f;
-            if (Vector3.Distance(transform.position, position1) < 1f) target = "position2";
-        }
-        else
-        {
-            agent.SetDestination(position2);
-            agent.stoppingDistance = 0.1f;
-            if (Vector3.Distance(transform.position, position2) < 1f) target = "position1";
+            SetNewDestination();
         }
 
+    }
+
+    private void SetNewDestination()
+    {
+        var destination = GenerateNewDestination();
+        agent.SetDestination(destination);
+    }
+
+    private Vector3 GenerateNewDestination()
+    {
+        var x = GenerateRandomFloat();
+        var y = 1f;
+        var z = GenerateRandomFloat();
+        return new Vector3(x, y, z);
+    }
+
+    private float GenerateRandomFloat()
+    {
+        return Random.Range(minOnAxis, maxOnAxis);
+    }
+
+    private bool IsCloseToDestination()
+    {
+        return agent.remainingDistance < sufficientDistance;
     }
 }

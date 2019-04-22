@@ -29,9 +29,9 @@ public class PlayerMove : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Walkable")
                 {
                     animator.SetBool("isWalking", true);
-                    SetAngle();
                     agent.SetDestination(hit.point);
                     agent.stoppingDistance = 0.1f;
+
                 }
 
             }
@@ -46,20 +46,33 @@ public class PlayerMove : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Enemy")
                 {
                     animator.SetBool("isWalking", true);
-                    SetAngle();
                     followedObject = hit.collider.transform.parent.gameObject;
                 }
                 else if (hit.collider.gameObject.tag == "Walkable")
                 {
-                    Debug.Log(hit.collider.gameObject.name);
                     animator.SetBool("isWalking", true);
-                    SetAngle();
                     if (followedObject != null) followedObject = null;
                     agent.SetDestination(hit.point);
                     agent.stoppingDistance = 0.1f;
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            animator.SetTrigger("isJumping");
+
+        float moveSpeed = Input.GetAxis("Vertical");
+        animator.SetFloat("speed", moveSpeed);
+
+        if(moveSpeed>0.5f)
+        {
+            agent.speed = moveSpeed * 7;
+        }
+        else
+        {
+            agent.speed = 3.5f;
+        }
+
         if (followedObject != null)
         {
             agent.SetDestination(followedObject.transform.position);
@@ -70,12 +83,5 @@ public class PlayerMove : MonoBehaviour
         {
             animator.SetBool("isWalking", false);
         }
-    }
-
-    private void SetAngle()
-    {
-        //Vector3 vector = Vector3.Normalize(transform.position - agent.destination);
-        //Debug.Log(vector);
-        //transform.rotation = Quaternion.Euler(vector.x, vector.y, vector.z);
     }
 }
