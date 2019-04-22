@@ -50,7 +50,6 @@ public class PlayerMove : MonoBehaviour
                 }
                 else if (hit.collider.gameObject.tag == "Walkable")
                 {
-                    Debug.Log(hit.collider.gameObject.name);
                     animator.SetBool("isWalking", true);
                     if (followedObject != null) followedObject = null;
                     agent.SetDestination(hit.point);
@@ -61,6 +60,18 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             animator.SetTrigger("isJumping");
+
+        float moveSpeed = Input.GetAxis("Vertical");
+        animator.SetFloat("speed", moveSpeed);
+
+        if(moveSpeed>0.5f)
+        {
+            agent.speed = moveSpeed * 7;
+        }
+        else
+        {
+            agent.speed = 3.5f;
+        }
 
         if (followedObject != null)
         {
