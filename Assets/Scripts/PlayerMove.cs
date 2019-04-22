@@ -50,7 +50,6 @@ public class PlayerMove : MonoBehaviour
                 }
                 else if (hit.collider.gameObject.tag == "Walkable")
                 {
-                    Debug.Log(hit.collider.gameObject.name);
                     animator.SetBool("isWalking", true);
                     if (followedObject != null) followedObject = null;
                     agent.SetDestination(hit.point);
