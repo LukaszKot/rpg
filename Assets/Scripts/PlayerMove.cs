@@ -15,7 +15,7 @@ public class PlayerMove : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         cam = Camera.main;
-        animator = transform.Find("Douglas").gameObject.GetComponent<Animator>();
+        animator = transform.Find("paladin_prop_j_nordstrom").gameObject.GetComponent<Animator>();
     }
     void Update()
     {
